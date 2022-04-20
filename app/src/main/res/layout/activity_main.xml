@@ -16,90 +16,140 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Palette Sample" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:weightSum="5"
+        android:layout_margin="20dp"
         app:layout_constraintBottom_toTopOf="@id/input_image_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchCheckBox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight="4.5" />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/vibrantSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toEndOf="@id/image_view"
+        app:layout_constraintTop_toTopOf="@id/image_view" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/vibrantSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/vibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_0"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/darkVibrantSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/darkVibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/darkVibrantSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toStartOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/vibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/lightVibrantSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toStartOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/darkVibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/lightVibrantSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/lightVibrantSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/lightVibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/mutedSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toStartOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/lightVibrantSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_5"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/mutedSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/mutedSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/mutedSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_6"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/darkMutedSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toStartOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/mutedSwatchCheckBox" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/color_image_7"
-                android:layout_width="20dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/shape_null_color" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/darkMutedSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/darkMutedSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/darkMutedSwatchCheckBox" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/lightMutedSwatchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/vibrantSwatchImg"
+        app:layout_constraintStart_toStartOf="@id/vibrantSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/darkMutedSwatchCheckBox" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/lightMutedSwatchImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintBottom_toBottomOf="@id/lightMutedSwatchCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/darkVibrantSwatchCheckBox"
+        app:layout_constraintTop_toTopOf="@id/lightMutedSwatchCheckBox" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/gradientImg"
+        android:layout_width="25dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_null_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/lightMutedSwatchCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/lightMutedSwatchCheckBox" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/input_image_button"
@@ -108,8 +158,19 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:text="Input Image"
+        app:layout_constraintEnd_toStartOf="@id/search_image_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/search_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="Search Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/input_image_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,11 @@
 package com.natlwd.palettesample
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.drawable.GradientDrawable
@@ -9,18 +13,35 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.palette.graphics.Palette
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.natlwd.palettesample.databinding.ActivityMainBinding
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    companion object {
+        const val TAG = "MainActivity"
+
+        fun startActivity(context: Context, imageItem: ImageItem) {
+            context.startActivity(Intent(context, MainActivity::class.java).apply {
+                putExtra("image_item", imageItem)
+            })
+        }
+    }
 
     private val startForProfileImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -50,6 +71,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupView()
+        setupListener()
+    }
+
+    private fun setupView() {
+        val imageUrl = intent.getParcelableExtra<ImageItem>("image_item")
+        imageUrl?.url?.let { url ->
+//            Glide
+//                .with(this)
+//                .load(url)
+//                .error(R.drawable.ic_error_outline)
+//                .fitCenter()
+//                .into(binding.imageView)
+
+            getBitmapFromURL(url)?.let { bitmap ->
+                binding.imageView.setImageBitmap(bitmap)
+                createPaletteAsync(bitmap)
+            } ?: run {
+                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupListener() {
         binding.inputImageButton.setOnClickListener {
             ImagePicker.with(this)
                 .compress(1024)         //Final image size will be less than 1 MB(Optional)
@@ -61,6 +107,22 @@ class MainActivity : AppCompatActivity() {
                     startForProfileImageResult.launch(intent)
                 }
         }
+
+        binding.searchImageButton.setOnClickListener {
+            SearchImageActivity.startActivity(this)
+        }
+    }
+
+    private fun setGradient(p0: Int, p1: Int) {
+        //gradient color
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.BOTTOM_TOP, intArrayOf(p0, p1)
+        )
+        gd.cornerRadius = 0f
+        //imageView bg color
+        binding.imageView.background = gd
+        //last color
+        binding.gradientImg.background = gd
     }
 
     private fun resetColor() {
@@ -69,14 +131,13 @@ class MainActivity : AppCompatActivity() {
         binding.imageView.setBackgroundColor(Color.WHITE)
 
         val nullColor = AppCompatResources.getDrawable(this, R.drawable.shape_null_color)
-        binding.colorImage0.background = nullColor
-        binding.colorImage1.background = nullColor
-        binding.colorImage2.background = nullColor
-        binding.colorImage3.background = nullColor
-        binding.colorImage4.background = nullColor
-        binding.colorImage5.background = nullColor
-        binding.colorImage6.background = nullColor
-        binding.colorImage7.background = nullColor
+        binding.vibrantSwatchImg.background = nullColor
+        binding.darkVibrantSwatchImg.background = nullColor
+        binding.lightVibrantSwatchImg.background = nullColor
+        binding.mutedSwatchImg.background = nullColor
+        binding.darkMutedSwatchImg.background = nullColor
+        binding.lightMutedSwatchImg.background = nullColor
+        binding.gradientImg.background = nullColor
     }
 
     private fun createPaletteAsync(bitmap: Bitmap) {
@@ -84,26 +145,12 @@ class MainActivity : AppCompatActivity() {
 
         Palette.from(bitmap).generate() {
             it?.let { palette ->
-                //gradient color
-                val gd = GradientDrawable(
-                    GradientDrawable.Orientation.BOTTOM_TOP, intArrayOf(
-                        palette.darkMutedSwatch?.rgb ?: run {
-                            palette.vibrantSwatch?.rgb ?: Color.BLACK
-                        },
-                        palette.lightMutedSwatch?.rgb ?: run {
-                            palette.darkVibrantSwatch?.rgb ?: Color.BLACK
-                        }
-                    )
-                )
-                gd.cornerRadius = 0f
-                //imageView bg color
-                binding.imageView.background = gd
-                //last color
-                binding.colorImage7.background = gd
-
+                /**
+                 *  Palette
+                 * */
                 palette.vibrantSwatch?.rgb?.let { vibrant ->
                     //first color
-                    binding.colorImage0.setBackgroundColor(vibrant)
+                    binding.vibrantSwatchImg.setBackgroundColor(vibrant)
                     //toolbar bg color
                     binding.toolbar.setBackgroundColor(vibrant)
                 }
@@ -115,27 +162,52 @@ class MainActivity : AppCompatActivity() {
 
                 palette.darkVibrantSwatch?.rgb?.let { darkVibrant ->
                     //second color
-                    binding.colorImage1.setBackgroundColor(darkVibrant)
+                    binding.darkVibrantSwatchImg.setBackgroundColor(darkVibrant)
                 }
 
                 palette.lightVibrantSwatch?.rgb?.let { lightVibrant ->
                     //third color
-                    binding.colorImage2.setBackgroundColor(lightVibrant)
+                    binding.lightVibrantSwatchImg.setBackgroundColor(lightVibrant)
                 }
 
                 palette.mutedSwatch?.rgb?.let { mutedSwatch ->
                     //fourth color
-                    binding.colorImage3.setBackgroundColor(mutedSwatch)
+                    binding.mutedSwatchImg.setBackgroundColor(mutedSwatch)
                 }
 
                 palette.darkMutedSwatch?.rgb?.let { darkMutedSwatch ->
                     //fifth color
-                    binding.colorImage4.setBackgroundColor(darkMutedSwatch)
+                    binding.darkMutedSwatchImg.setBackgroundColor(darkMutedSwatch)
                 }
 
                 palette.lightMutedSwatch?.rgb?.let { lightMutedSwatch ->
                     //sixth color
-                    binding.colorImage5.setBackgroundColor(lightMutedSwatch)
+                    binding.lightMutedSwatchImg.setBackgroundColor(lightMutedSwatch)
+                }
+
+                /**
+                 *  Gradient
+                 * */
+                val p0: Int?
+                if (palette.darkMutedSwatch?.rgb != null) {
+                    binding.darkMutedSwatchCheckBox.isChecked = true
+                    p0 = palette.darkMutedSwatch?.rgb
+                } else {
+                    binding.vibrantSwatchCheckBox.isChecked = true
+                    p0 = palette.vibrantSwatch?.rgb
+                }
+
+                val p1: Int?
+                if (palette.lightMutedSwatch?.rgb != null) {
+                    binding.lightMutedSwatchCheckBox.isChecked = true
+                    p1 = palette.lightMutedSwatch?.rgb
+                } else {
+                    binding.darkVibrantSwatchCheckBox.isChecked = true
+                    p1 = palette.darkVibrantSwatch?.rgb
+                }
+
+                if (p0 != null && p1 != null) {
+                    setGradient(p0, p1)
                 }
             }
         }
@@ -159,6 +231,20 @@ class MainActivity : AppCompatActivity() {
 
             bitmap
         } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getBitmapFromURL(src: String?): Bitmap? {
+        return try {
+            val url = URL(src)
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input: InputStream = connection.inputStream
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
             e.printStackTrace()
             null
         }
